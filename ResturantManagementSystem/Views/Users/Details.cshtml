@@ -1,0 +1,30 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@model RmsUserVM
+@section Title {
+Users
+}
+@section SubTitle {
+Details
+}
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Username</dt>
+        <dd class="col-sm-10">@Model.UserName</dd>
+
+        <dt class="col-sm-2">Email:</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Is email confirmed:</dt>
+        <dd class="col-sm-10">@Model.EmailConfirmed.ToString()</dd>
+
+        <dt class="col-sm-2">Phone number:</dt>
+        <dd class="col-sm-10">@(Model.PhoneNumber ?? "Not Selected Yet")</dd>
+        
+        <dt class="col-sm-2">Address:</dt>
+        <dd class="col-sm-10">@(Model.Address ?? "Not Selected Yet")</dd>
+
+        <dt class="col-sm-2">Roles:</dt>
+		<dd class="col-sm-10">@(string.Join(", ", Model.Roles))</dd>
+    </dl>
+</div>

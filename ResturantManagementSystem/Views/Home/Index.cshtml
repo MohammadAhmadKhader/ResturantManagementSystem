@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/defaultLayout.cshtml";
+}
+@model string;
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to RMS</h1>
+        <p class="lead">Resturant Management System.</p>
+        <hr class="my-4">
+    </div>
+
+	<div class="row mt-2 justify-content-between">
+        <div class="col-md-4 px-1">
+            <h2>Customers</h2>
+            <p>Manage customer reservations, update availability, and send confirmations.</p>
+            <a class="btn btn-outline-primary" href="/users">Go to Customers &raquo;</a>
+        </div>
+        <div class="col-md-4 px-1">
+            <h2>Orders</h2>
+            <p>Track and manage all incoming orders from one centralized system.</p>
+            <a class="btn btn-outline-secondary" href="/Orders">View Orders &raquo;</a>
+        </div>
+        <div class="col-md-4 px-1">
+            <h2>Chefs</h2>
+            <p>Oversee your chef's'</p>
+            <a class="btn btn-outline-success" href="/Chefs">Manage Chefs &raquo;</a>
+        </div>
+    </div>
+</div>

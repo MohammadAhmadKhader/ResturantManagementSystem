@@ -1,0 +1,62 @@
+﻿@using ResturantManagementSystem.ViewModels
+@section Title {
+Chefs
+}
+@section SubTitle {
+Update
+}
+
+@model ChefCreateVM
+<section class="pt-2">
+    <form asp-controller="Chefs" asp-action="Update">
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input type="text" class="form-control" asp-for="Email" maxlength="auto" />
+            <span asp-validation-for="Email" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Salary"></label>
+            <input type="number" class="form-control" asp-for="Salary" maxlength="auto" />
+            <span asp-validation-for="Salary" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="button" onclick="submitData()" class="btn btn-warning mt-2">
+            Update
+        </button>
+    </form>
+</section>
+
+@section Scripts{
+<script>
+    function submitData() {
+        const path = window.location.pathname;
+        const pathSegments = path.split('/');
+        const Id = pathSegments[pathSegments.length - 1];
+
+        const data = {
+            Id: Id,
+            Email: document.getElementById('Email').value,
+            Salary: document.getElementById('Salary').value,
+        };
+        console.log(data)
+        fetch('/Chefs/Update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+}

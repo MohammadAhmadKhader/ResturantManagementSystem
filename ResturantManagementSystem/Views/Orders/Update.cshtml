@@ -1,0 +1,25 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Orders
+}
+@section SubTitle {
+Update
+}
+
+@model OrderUpdateVM
+<section class="pt-2">
+    <form asp-controller="Orders" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Status">Meals list</label>
+            <select asp-for="Status" asp-items="@Model.StatusList" class="form-control">
+             
+            </select>
+            <span asp-validation-for="Status" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">
+            Add
+        </button>
+    </form>
+</section>

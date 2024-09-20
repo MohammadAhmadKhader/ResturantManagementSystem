@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ResturantManagementSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ResturantManagementSystem.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="bg-success">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ResturantManagementSystem</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row main-aside-wrapper">
+            <aside class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-2 md:pt-3">
+                    <ul class="nav flex-row md:flex-column">
+                        <li class="nav-item">
+                            <a asp-controller="Chefs" asp-action="Index" asp-route-page="1" asp-route-limit="9" class="nav-link">
+                                <span data-feather="home"></span>
+                                Chefs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Orders" asp-action="Index" asp-route-page="1" asp-route-limit="9" class="nav-link">
+                                <span data-feather="file"></span>
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Ingredients" asp-action="Index" asp-route-page="1" asp-route-limit="9" class="nav-link">
+                                <span data-feather="shopping-cart"></span>
+                                Ingredients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Foods" asp-action="Index" asp-route-page="1" asp-route-limit="9" class="nav-link">
+                                <span data-feather="users"></span>
+                                Foods
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Users" asp-action="Index" asp-route-page="1" asp-route-limit="9" class="nav-link">
+                                <span data-feather="bar-chart-2"></span>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Roles" asp-action="Index" class="nav-link active" aria-current="page">
+                                <span data-feather="home"></span>
+                                Roles
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <main role="main" class="pb-3 col-12 col-md-9 col-lg-10">
+                @if (IsSectionDefined("Title"))
+                {
+                    <h2 class="my-3">
+                        @RenderSection("Title", required:false) - @RenderSection("SubTitle", required: false)
+                    </h2>
+                }
+                
+                <div>
+					@RenderBody()
+                </div>
+			</main>
+		</div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+			<div class="d-flex justify-content-between">
+				<div>
+					&copy; 2024 - RMS
+				</div>
+
+				<div>
+					Made by Mohammad Khader
+				</div>
+			</div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

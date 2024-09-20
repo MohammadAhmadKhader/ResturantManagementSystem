@@ -1,0 +1,56 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Roles
+}
+@section SubTitle {
+Update
+}
+
+@model RoleVM
+<section>
+    <form asp-controller="Roles" asp-action="Update" method="put" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name" maxlength="auto" />
+            <span asp-validation-for="Name" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="button" onclick="submitData()" class="btn btn-warning mt-2">
+            Update
+        </button>
+    </form>
+</section>
+
+@section Scripts{
+    <script>
+        function submitData() {
+            const path = window.location.pathname;
+            const pathSegments = path.split('/');
+            const Id = pathSegments[pathSegments.length - 1];
+           
+            const data = {
+                Id: Id,
+                Name: document.getElementById('Name').value,
+            };
+ 
+            fetch('/Roles/Update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+             .then(data => {
+                 console.log(data)
+                 if (data.success) {
+                    window.location.href = data.redirectUrl;
+                 }
+                 
+             })
+             .catch(error => {
+                 console.error('Error:', error);
+             });
+        }
+    </script>
+}

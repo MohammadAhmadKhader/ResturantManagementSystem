@@ -1,0 +1,87 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Users
+}
+@section SubTitle {
+Show
+}
+
+@model (int page,int limit,int count,List<RmsUserVM> users)
+
+<section class="overflow-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Email Confirmed</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        @if (Model.users.Count == 0)
+        {
+            <tbody>
+                <tr class="bg-warning text-black fw-bold ">
+                    <td colspan="2" class="rounded-2">
+                        No data found
+                    </td>
+                </tr>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                @foreach (var User in Model.users)
+                {
+                    <tr>
+                        <td>
+                            @User.Id
+                        </td>
+                        
+                        <td>
+                            @User.UserName
+						</td>
+						<td>
+							@User.Email
+						</td>
+                        <td>
+                            @User.EmailConfirmed
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column gap-1">
+								<a asp-controller="Users" asp-action="Details" asp-route-Id="@User.Id" 
+                                class="btn-info rounded-2 px-2 py-1 ms-1 text-decoration-none ">
+									Details
+								</a>
+                                <a asp-controller="Users" asp-action="UpdateRoles" asp-route-Id="@User.Id"
+                                   class="btn-warning rounded-2 px-2 py-1 ms-1 text-decoration-none ">
+                                    Edit Roles
+                                </a>
+								<a data-id="@User.Id" class="btn-danger rounded-2 px-2 py-1 ms-1 text-decoration-none js-deleteBtn">
+									Delete
+								</a>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+
+    </table>
+</section>
+<div>
+    Page @Model.page of @((int) Math.Ceiling(Model.count / (double)Model.limit))
+
+    @if (Model.page > 1)
+    {
+        @Html.ActionLink("Previous", "Index", new { page = Model.page - 1 ,limit = 9})
+    }
+
+    @if (Model.page < (int)Math.Ceiling(Model.count / (double)Model.limit))
+    {
+        @Html.ActionLink("Next", "Index", new { page = Model.page + 1, limit = 9 })
+    }
+</div>

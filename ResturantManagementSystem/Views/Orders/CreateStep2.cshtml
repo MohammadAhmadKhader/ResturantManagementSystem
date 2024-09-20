@@ -1,0 +1,37 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Orders
+}
+@section SubTitle {
+Create - Step 2
+}
+
+@model OrderCreateStep2VM
+<section class="pt-2">
+    <h4>
+        Selecting Quantities:
+    </h4>
+    <form asp-controller="Orders" asp-action="CreateFinal">
+        <div class="form-group">
+            <input type="hidden" asp-for="ChefId" class="form-control"/>
+        </div>
+        @for (var i = 0; i < Model.Selections.Count; i++)
+        {
+            
+            <div class="form-group d-flex align-items-center mb-2">
+                <label asp-for="@Model.Selections[i].Quantity" class="me-2 mb-0" style="min-width:200px;">@Model.Selections[i].FoodName Quantity</label>
+                <input type="number" asp-for="@Model.Selections[i].Quantity" class="form-control form-control-sm text-center" style="width: 100px;" />
+                <span asp-validation-for="@Model.Selections[i].Quantity" class="text-danger text-sm mt-1 ms-1"></span>
+
+                <input type="hidden" asp-for="@Model.Selections[i].FoodId" class="form-control form-control-sm" style="width: 100px;" />
+                <input type="hidden" asp-for="@Model.Selections[i].FoodName" class="form-control form-control-sm" style="width: 100px;" />
+            </div>
+        }
+        
+
+        <button type="submit" class="btn btn-primary mt-2">
+            Create Order
+        </button>
+    </form>
+</section>

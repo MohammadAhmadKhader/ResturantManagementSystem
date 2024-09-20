@@ -1,0 +1,154 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Orders
+}
+@section SubTitle {
+Show
+}
+
+@model (int page,int limit,int count,List<OrderVM> Orders)
+
+<section class="overflow-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Order ChefName</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">Order FoodList</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        @if (Model.Orders.Count == 0)
+        {
+            <tbody>
+                <tr class="bg-warning text-black fw-bold ">
+                    <td colspan="5" class="rounded-2">
+                        No data found
+                    </td>
+                </tr>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                @foreach (var Order in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            @Order.Id
+                        </td>
+
+                        <td>
+                            @Order.Chef?.User?.UserName
+                        </td>
+                        <td>
+                            @Order.Status
+                        </td>
+                        <td>
+							<table style="width:100%;">
+                                <thead>
+                                <th class="border border-1 fw-normal">
+                                        Name
+                                    </th>
+                                <th class="border border-1 fw-normal text-center">
+                                        Qty
+                                    </th>
+                                </thead>
+                            @foreach (var of in Order.OrdersFoodsList)
+                            {
+									<tbody>
+                                    <tr>
+									    <td class="border border-1">
+                                                @(of.Food == null ? "Name Not Found" : of.Food.Name)
+                                        </td>
+                                            <td class="border border-1 text-center" style="width:50px;">
+                                                @of.Quantity
+                                        </td>
+                                    </tr>
+                                </tbody>
+								}
+							</table>
+                            
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column gap-1">
+                                <a asp-controller="Foods" asp-action="Update" asp-route-Id="@Order.Id" class="btn-warning rounded-2 px-2 py-1 ms-1 text-decoration-none">
+                                    Edit
+                                </a>
+                                <a data-id="@Order.Id" class="btn-danger rounded-2 px-2 py-1 ms-1 text-decoration-none js-deleteBtn">
+                                    Delete
+                                </a>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+    <a asp-controller="Orders" asp-action="Create" class="btn btn-primary">
+        Create
+    </a>
+</section>
+<div>
+    Page @Model.page of @((int)Math.Ceiling(Model.count / (double)Model.limit))
+
+    @if (Model.page > 1)
+    {
+        @Html.ActionLink("Previous", "Index", new { page = Model.page - 1, limit = 9 })
+    }
+
+    @if (Model.page < (int)Math.Ceiling(Model.count / (double)Model.limit))
+    {
+        @Html.ActionLink("Next", "Index", new { page = Model.page + 1, limit = 9 })
+    }
+</div>
+
+@section Scripts {
+    <script>
+        const deleteBtns = document.querySelectorAll(".js-deleteBtn");
+        deleteBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                console.log("clicked")
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#de0a26",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(async (result) => {
+
+                    if (result.isConfirmed) {
+                        const Id = btn.dataset.id;
+                        const response = await fetch(`/Orders/Delete/${Id}`, {
+                            method: "DELETE"
+                        })
+
+                        if (response.ok) {
+                            btn.closest("tr").remove();
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true,
+                            })
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Order was deleted successfully"
+                            })
+                        } else {
+                            console.log(await response.json())
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+}

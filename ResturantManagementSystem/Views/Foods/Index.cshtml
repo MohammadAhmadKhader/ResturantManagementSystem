@@ -1,0 +1,133 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Foods
+}
+@section SubTitle {
+Show
+}
+
+@model (int page,int limit,int count,List<FoodVM> Foods)
+
+<section class="overflow-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Ingredients</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        @if (Model.Foods.Count == 0)
+        {
+            <tbody>
+                <tr class="bg-warning text-black fw-bold ">
+                    <td colspan="4" class="rounded-2">
+                        No data found
+                    </td>
+                </tr>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                @foreach (var Food in Model.Foods)
+                {
+                    <tr>
+                        <td>
+                            @Food.Id
+						</td>
+                        <td style="width: 10%;">
+                            <img style="min-width: 60px;" src="@Url.Content($"~/images/foods/{@Food.ImageUrl}")" alt="@Food.Name Image" class="img-fluid rounded-2" />
+						</td>
+                        <td>
+                            @Food.Name
+                        </td>
+                        
+                        <td>
+                            @(Food.Ingredients == null || !Food.Ingredients.Any()
+                                ? "No Ingredients found"
+                                : string.Join(", ", Food.Ingredients.Select(i => i.Name)))
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column gap-1">
+                                <a asp-controller="Foods" asp-action="Update" asp-route-Id="@Food.Id" class="btn-warning rounded-2 px-2 py-1 ms-1 text-decoration-none">
+                                    Edit
+                                </a>
+                                <a data-id="@Food.Id" class="btn-danger rounded-2 px-2 py-1 ms-1 text-decoration-none js-deleteBtn">
+                                    Delete
+                                </a>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+    <a asp-controller="Foods" asp-action="Create" class="btn btn-primary">
+        Create
+    </a>
+</section>
+<div>
+    Page @Model.page of @((int)Math.Ceiling(Model.count / (double)Model.limit))
+
+    @if (Model.page > 1)
+    {
+        @Html.ActionLink("Previous", "Index", new { page = Model.page - 1, limit = 9 })
+    }
+
+    @if (Model.page < (int)Math.Ceiling(Model.count / (double)Model.limit))
+    {
+        @Html.ActionLink("Next", "Index", new { page = Model.page + 1, limit = 9 })
+    }
+</div>
+
+@section Scripts {
+    <script>
+        const deleteBtns = document.querySelectorAll(".js-deleteBtn");
+        deleteBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                console.log("clicked")
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#de0a26",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(async (result) => {
+
+                    if (result.isConfirmed) {
+                        const Id = btn.dataset.id;
+                        const response = await fetch(`/Foods/Delete/${Id}`, {
+                            method: "DELETE"
+                        })
+
+                        if (response.ok) {
+                            btn.closest("tr").remove();
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true,
+                            })
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Food was deleted successfully"
+                            })
+                        } else {
+                            console.log(await response.json())
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+}

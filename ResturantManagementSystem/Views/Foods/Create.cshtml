@@ -1,0 +1,35 @@
+﻿@using ResturantManagementSystem.ViewModels
+@section Title {
+Foods
+}
+@section SubTitle {
+Create
+}
+
+@model FoodCreateVM
+<section class="pt-2">
+    <form asp-controller="Foods" asp-action="Create" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name" maxlength="auto" />
+            <span asp-validation-for="Name" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImageFile">Image</label>
+            <input asp-for="ImageFile" type="file" class="form-control" />
+            <span asp-validation-for="ImageFile" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SelectedIngredients">Ingredients</label>
+            <select asp-for="SelectedIngredients" class="form-control" multiple="multiple" asp-items="@Model.Ingredients" size="10">
+            </select>
+            <span asp-validation-for="SelectedIngredients" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">
+            Add
+        </button>
+    </form>
+</section>

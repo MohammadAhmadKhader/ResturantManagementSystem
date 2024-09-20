@@ -1,0 +1,77 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Foods
+}
+@section SubTitle {
+Update
+}
+
+@model FoodUpdateVM
+<section class="pt-2">
+    <form asp-controller="Foods" asp-action="Update" id="foodUpdateForm">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name" maxlength="auto" />
+            <span asp-validation-for="Name" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="form-group" style="margin-bottom:-22px;">
+            <label asp-for="ImageFile">Image</label>
+            <input asp-for="ImageFile" type="file" class="form-control" />
+            <span asp-validation-for="ImageFile" class="text-danger text-sm mt-1 ms-1"></span>
+            <span asp-validation-for="ImageUrl" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="mb-2">
+            <img src="~/images/foods/@Model.ImageUrl" alt="@Model.Name Image" style="width:20%;min-width:120px;border-radius:5px;margin-bottom:10px;" />
+        </div>
+        
+        <input asp-for="ImageUrl" type="hidden" class="form-control" value="@Model.ImageUrl"/>
+       
+        <div class="form-group">
+            <label asp-for="SelectedIngredients">Ingredients</label>
+            <select asp-for="SelectedIngredients" class="form-control" multiple="multiple" asp-items="@Model.Ingredients" size="10">
+            </select>
+            <span asp-validation-for="SelectedIngredients" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="button" onclick="submitData()" class="btn btn-warning mt-2">
+            Update
+        </button>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        function submitData() {
+            const path = window.location.pathname;
+            const pathSegments = path.split('/');
+            const Id = pathSegments[pathSegments.length - 1];
+
+            const form = document.getElementById('foodUpdateForm')
+            const formData = new FormData(document.getElementById('foodUpdateForm'));
+            formData.append("Id", Id)
+         
+            fetch('/Foods/Update', {
+                method: 'PUT',
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        
+                        alert(data.errors);
+                    }
+            
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                });
+        }
+    </script>
+}

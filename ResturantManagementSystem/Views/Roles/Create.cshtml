@@ -1,0 +1,21 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Roles
+}
+@section SubTitle {
+Create
+}
+
+@model RoleVM
+<form asp-controller="Roles" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input type="text" class="form-control" asp-for="Name" maxlength="auto"/>
+        <span asp-validation-for="Name" class="text-danger text-sm mt-1 ms-1"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">
+        Add
+    </button>
+</form>

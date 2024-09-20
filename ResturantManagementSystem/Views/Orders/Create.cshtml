@@ -1,0 +1,31 @@
+﻿@using ResturantManagementSystem.ViewModels
+
+@section Title {
+Orders
+}
+@section SubTitle {
+Create - Step 1
+}
+
+@model OrderCreateStep1VM
+<section class="pt-2">
+    <form asp-controller="Orders" asp-action="Initiate" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label asp-for="SelectedFoods">Meals list</label>
+            <select asp-for="SelectedFoods" class="form-control" multiple="multiple" asp-items="@Model.Foods">
+            </select>
+            <span asp-validation-for="SelectedFoods" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ChefId">Chefs list</label>
+            <select asp-for="ChefId" class="form-control" asp-items="@Model.Chefs">
+            </select>
+            <span asp-validation-for="ChefId" class="text-danger text-sm mt-1 ms-1"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">
+            Continue
+        </button>
+    </form>
+</section>
